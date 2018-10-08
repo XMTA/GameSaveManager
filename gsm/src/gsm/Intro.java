@@ -4,20 +4,58 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Intro {
     public static void main(String []args) {
-        System.out.println("Hello World"); // 打印 Hello World
+        System.out.println("Hello 子扬"); // 打印 Hello 子扬
+        // 获取C:\\下的文件列表
         ArrayList<String> arrayList = getFiles("C:\\");
         
-        try {
-			copyDir("D:\\搜狗高速下载","D:\\TEST");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        ArrayList<String> gameSavePath  = new ArrayList<String>();
+        gameSavePath.add("C:\\Users\\ZiYang Huang\\Documents\\Overwatch");
+        gameSavePath.add("C:\\Users\\ZiYang Huang\\Documents\\The Witcher 3");
+        gameSavePath.add("C:\\Users\\ZiYang Huang\\Documents\\Paradox Interactive\\Crusader Kings II");
+        
+        
+        String output = "D:\\GameSave";
+        if (!(new File(output)).exists()) {
+            (new File(output)).mkdir();
+        }
+        
+        Date dNow = new Date( );
+        SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd_");
+        String TodayString = ft.format(dNow);
+        
+        System.out.println(getLastName("C:\\Users\\ZiYang Huang\\Documents\\Overwatch"));
+        
+        for(String gamePath : gameSavePath ){
+        	String GameName = getLastName(gamePath);
+        	
+        	//这里开始复制
+            try {
+    			copyDir(gamePath,output+"\\"+TodayString+GameName);
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        	
+        }
+    
+
     }
+    
+    
+    //获取路径中的名字
+    public static String getLastName(String path) {
+    	File tempFile =new File(path.trim());
+    	String fileName = tempFile.getName(); 
+    	return fileName;
+    }
+    
     
     public static ArrayList<String> getFiles(String path) {
         ArrayList<String> files = new ArrayList<String>();
